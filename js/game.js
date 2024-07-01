@@ -80,7 +80,7 @@ function update() {
             var distanceTraveled = Phaser.Math.Distance.Between(initialXPosition, initialYPosition, newXPosition, newYPosition);
             var distanceTraveledMeters = distanceTraveled / 100;
 
-            var desiredDistance = Phaser.Math.FloatBetween(5, 10);
+            // var desiredDistance = Phaser.Math.FloatBetween(5, 10);
 
             if (distanceTraveledMeters >= desiredDistance) {
                 planeCrashed = true;
@@ -117,6 +117,10 @@ function requestTimerValue() {
                 if (serverResponse.trim() === "Game Start") {
                     timerStatus = false;
                     initialTime = Date.now(); // Reset initialTime when game starts
+                    desired = parseInt($('#desired-distance').val());
+                    desiredDistance = isNaN(desired) ? 1 : desired;
+
+
                 }
 
                 updateTimer();
@@ -135,3 +139,9 @@ function updateTimer() {
         timerText.setText("Game Start");
     }
 }
+
+
+
+
+
+    

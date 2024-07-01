@@ -4,13 +4,253 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aviator Game</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.js"></script>
-    <script src="js/game.js"></script>
+
     <style>
-        body { margin: 0; }
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align items at the top */
+            min-height: 100vh; /* Full viewport height */
+            background-color: #f0f0f0; /* Example background color */
+        }
+        .container {
+            display: flex;
+            flex-direction: column; /* Stack columns vertically */
+            max-width: 1200px; /* Adjust as needed */
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .left-panel {
+            background-color: #fff; /* Example background color */
+            padding: 20px;
+            box-sizing: border-box;
+            margin-bottom: 20px; /* Space between panels */
+            overflow: hidden; /* Hide overflow outside the left panel */
+        }
+        .right-panel {
+            background-color: #fff; /* Example background color */
+            padding: 20px;
+            box-sizing: border-box;
+            margin-bottom: 20px; /* Space between panels */
+        }
+        .bet-list-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .bet-list-table th, .bet-list-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .bet-list-table th {
+            background-color: #f2f2f2;
+        }
+        .bet-list-table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .bet-list-scrollable {
+            max-height: 300px; /* Limit height and enable scrolling */
+            overflow-y: auto; /* Enable vertical scrolling */
+        }
+        .apply-bet-box {
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .apply-bet-button {
+            margin-top: 10px;
+        }
+        .increment-decrement {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .quantity {
+            font-size: 18px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .quantity input {
+            width: 50px;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 5px;
+        }
+        .quantity button {
+            background-color: #5cb85c;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .quantity button:hover {
+            background-color: #4cae4c;
+        }
+        .user-profile {
+            display: flex;
+            align-items: center;
+        }
+        .user-profile img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .user-profile span {
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-4 left-panel">
+            <!-- Left panel content for bet list with tabs -->
+            <h2>Bet List</h2>
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#all-bets">All Bets</a></li>
+                <li><a data-toggle="tab" href="#top-bets">Top Bets</a></li>
+                <li><a data-toggle="tab" href="#best-bets">My Bets</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div id="all-bets" class="tab-pane fade in active">
+                    <h3>All Bets</h3>
+                    <table class="bet-list-table">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Bet USD X</th>
+                                <th>Cash Out USD</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="user-profile"><img src="path_to_user_profile_image.jpg" alt="User Profile Image"><span>User ID 1</span></td>
+                                <td>$10.0</td>
+                                <td>$10.0</td>
+                            </tr>
+                            <tr>
+                                <td class="user-profile"><img src="path_to_user_profile_image.jpg" alt="User Profile Image"><span>User ID 2</span></td>
+                                <td>$20.0</td>
+                                <td>$20.0</td>
+                            </tr>
+                            <tr>
+                                <td class="user-profile"><img src="path_to_user_profile_image.jpg" alt="User Profile Image"><span>User ID 3</span></td>
+                                <td>$15.0</td>
+                                <td>$15.0</td>
+                            </tr>
+                            <tr>
+                                <td class="user-profile"><img src="path_to_user_profile_image.jpg" alt="User Profile Image"><span>User ID 4</span></td>
+                                <td>$25.0</td>
+                                <td>$25.0</td>
+                            </tr>
+                            <tr>
+                                <td class="user-profile"><img src="path_to_user_profile_image.jpg" alt="User Profile Image"><span>User ID 5</span></td>
+                                <td>$30.0</td>
+                                <td>$30.0</td>
+                            </tr>
+                            <tr>
+                                <td class="user-profile"><img src="path_to_user_profile_image.jpg" alt="User Profile Image"><span>User ID 6</span></td>
+                                <td>$35.0</td>
+                                <td>$35.0</td>
+                            </tr>
+                            <tr>
+                                <td class="user-profile"><img src="path_to_user_profile_image.jpg" alt="User Profile Image"><span>User ID 7</span></td>
+                                <td>$40.0</td>
+                                <td>$40.0</td>
+                            </tr>
+                            <tr>
+                                <td class="user-profile"><img src="path_to_user_profile_image.jpg" alt="User Profile Image"><span>User ID 8</span></td>
+                                <td>$45.0</td>
+                                <td>$45.0</td>
+                            </tr>
+                            <tr>
+                                <td class="user-profile"><img src="path_to_user_profile_image.jpg" alt="User Profile Image"><span>User ID 9</span></td>
+                                <td>$50.0</td>
+                                <td>$50.0</td>
+                            </tr>
+                            <tr>
+                                <td class="user-profile"><img src="path_to_user_profile_image.jpg" alt="User Profile Image"><span>User ID 10</span></td>
+                                <td>$55.0</td>
+                                <td>$55.0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="top-bets" class="tab-pane fade">
+                    <h3>Top Bets</h3>
+                    <table class="bet-list-table">
+                        <thead>
+                            <tr>
+                                <th>Bet Name</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Top Bet 1</td><td>$30.0</td></tr>
+                            <tr><td>Top Bet 2</td><td>$25.0</td></tr>
+                            <tr><td>Top Bet 3</td><td>$35.0</td></tr>
+                            <tr><td>Top Bet 4</td><td>$40.0</td></tr>
+                            <tr><td>Top Bet 5</td><td>$45.0</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="best-bets" class="tab-pane fade">
+                    <h3>My Bets</h3>
+                    <table class="bet-list-table">
+                        <thead>
+                            <tr>
+                                <th>Bet Name</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Best Bet 1</td><td>$50.0</td></tr>
+                            <tr><td>Best Bet 2</td><td>$40.0</td></tr>
+                            <tr><td>Best Bet 3</td><td>$60.0</td></tr>
+                            <tr><td>Best Bet 4</td><td>$70.0</td></tr>
+                            <tr><td>Best Bet 5</td><td>$80.0</td></tr>
+                            <tr><td>Best Bet 6</td><td>$90.0</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-8 right-panel">
+            <!-- Apply Bet Box -->
+            <div class="apply-bet-box">
+                <div class="increment-decrement">
+                    <div class="quantity">
+                        <button onclick="decrement()">-</button>
+                        <input type="number" id="bet-quantity" value="1" min="1">
+                        <button onclick="increment()">+</button>
+                    </div>
+                    <button id="bet-button" class="btn btn-success apply-bet-button" onclick="toggleBet()">Bet $10.0 USD</button>
+                </div>
+                <div class="desired-distance">
+                    <label for="desired-distance">Desired Distance:</label>
+                    <input type="number" id="desired-distance" min="1">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/game.js"></script>
+<script src="js/custom.js"></script>
 </body>
 </html>
-<!-- ednapower.com -->
